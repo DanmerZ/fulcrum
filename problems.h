@@ -3,6 +3,8 @@
 
 
 #include <iostream>
+#include <list>
+#include <unordered_set>
 
 /* Problem 1
  * Reverse a singly linked list with and without recursion
@@ -183,6 +185,46 @@ void problem_3()
     std::cout << "Not a Progression: " << isArithmeticalProgression(notProgression,5) << std::endl;
 }
 
+/* Problem 4
+ * Write a function to leave only one node for nodes with duplicate values.
+ *
+ * I guess the problem is about a list's node.
+ * The idea is to store every element of list in a hash set (unordered_set)
+ * and check if some next element is already in hash set, then remove it from the list
+*/
+
+void problem_4()
+{
+    std::list<int> list;
+    list.push_back(1);
+    list.push_back(2);
+    list.push_back(3);
+    list.push_back(2);
+    list.push_back(2);
+    list.push_back(4);
+    list.push_back(1);
+
+    std::unordered_set<int> set;
+
+    std::list<int>::iterator lit;
+    std::unordered_set<int>::iterator sit;
+
+    for (lit = list.begin(); lit != list.end(); )
+    {
+        sit = set.find(*lit);
+        set.insert(*lit);
+        if (sit != set.end()) // if duplicate
+        {
+            std::cout << "Erase duplicate: " << *lit << std::endl;
+            lit = list.erase(lit);
+        }
+        else
+        {
+            ++lit;
+        }
+    }
+    std::cout << "finished" << std::endl;
+}
 
 #endif // PROBLEMS_H
 
