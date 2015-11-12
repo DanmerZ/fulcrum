@@ -66,23 +66,16 @@ public:
     }
     void reverse()
     {
-        Node* n1, *n2, *n3;
-        n1 = root->next;
-        if (n1 == NULL) return;
-        n2 = n1->next;
-        if (n2 == NULL) return;
-        n3 = n2->next;
-
-        n1->next = NULL;
-        while (n2 != NULL)
+        Node* curr = root->next;
+        Node* prev = NULL;
+        while(curr != NULL)
         {
-            n3 = n2->next;
-            n2->next = n1;
-
-            n1 = n2;
-            n2 = n3;
+            Node* next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
         }
-        root->next = n1;
+        root->next = prev;
     }
     void reverse_recursion()
     {
@@ -105,8 +98,8 @@ void problem_1()
     std::cout << "Before reversing:\n";
     lst.print_list();
 
-    //lst.reverse();
-    lst.reverse_recursion();
+    lst.reverse();
+    //lst.reverse_recursion();
 
     std::cout << "After reversing:\n";
     lst.print_list();
