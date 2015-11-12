@@ -10,7 +10,7 @@ int main()
 
     //twolists();
 
-    problem_3();
+    problem_2();
 
 
     return 0;

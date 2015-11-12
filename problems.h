@@ -4,9 +4,10 @@
 
 #include <iostream>
 
-/* Reverse a singly linked list with and without recursion
+/* Problem 1
+ * Reverse a singly linked list with and without recursion
  *
- * Reconnect node->next pointers to inverse direction
+ * Reconnect node->next pointers in inverse direction
  * from next to prev
 */
 struct Node
@@ -105,9 +106,61 @@ void problem_1()
     lst.print_list();
 }
 
-/* Write a function to determine if an int array is an arithmetical progression
+/* Problem 2
+ * Find the min value in a sorted cycled singly linked list
  *
+ * Using Floyd's cycle-finding algorithm to detect cycle
+ * with fast and slow pointers
  *
+ * */
+
+bool isCycledList(Node* root)
+{
+    Node* fast = root;
+    Node* slow = root;
+    int minimum = root->data;
+    do
+    {
+        slow = slow->next;
+        minimum = std::min(minimum,slow->data);
+        if (slow == NULL) return false;
+        fast = fast->next->next;
+        if (fast == NULL) return false;
+        std::cout << "Slow: " << slow->data << ", fast: " << fast->data << std::endl;
+
+    } while(fast != slow);
+    std::cout << "Minimum value in list is: " << minimum << std::endl;
+    return true;
+}
+
+void problem_2()
+{
+    // create cycled ordered list
+    Node* root = new Node(NULL,0);
+    Node* n1 = new Node(NULL,1);
+    Node* n2 = new Node(NULL,2);
+    Node* n3 = new Node(NULL,3);
+    Node* n4 = new Node(NULL,4);
+    Node* n5 = new Node(NULL,5);
+    Node* n6 = new Node(NULL,6);
+    Node* n7 = new Node(NULL,7);
+
+    root->next = n1;
+    n1->next = n2; // cycle from here
+    n2->next = n3;
+    n3->next = n4;
+    n4->next = n5;
+    n5->next = n6;
+    n6->next = n7;
+    n7->next = n2; // to there
+    //n7->next = NULL;
+    std::cout << "isCycled: " << isCycledList(root) << std::endl;
+}
+
+/* Problem 3
+ * Write a function to determine if an int array is an arithmetical progression
+ *
+ * Comparing two adjucent elements
  *
  * */
 
