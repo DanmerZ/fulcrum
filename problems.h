@@ -105,5 +105,31 @@ void problem_1()
     lst.print_list();
 }
 
+/* Write a function to determine if an int array is an arithmetical progression
+ *
+ *
+ *
+ * */
+
+bool isArithmeticalProgression(int arr[], int size)
+{
+    int diff = arr[1] - arr[0];
+    for (int i = 1; i < size; i++)
+    {
+        if (arr[i]-arr[i-1] != diff) return false;
+    }
+    return true;
+}
+
+void problem_3()
+{
+    int progression[] = {2,4,6,8,10};
+    int notProgression[] = {2,4,6,8,9};
+
+    std::cout << "A Progression: " << isArithmeticalProgression(progression,5) << std::endl;
+    std::cout << "Not a Progression: " << isArithmeticalProgression(notProgression,5) << std::endl;
+}
+
+
 #endif // PROBLEMS_H
 
