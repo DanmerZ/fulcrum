@@ -8,7 +8,6 @@
 #include <map>
 #include <string>
 #include <algorithm>
-#include <vector>
 #include <set>
 
 /* Problem 1
@@ -352,7 +351,6 @@ void problem_7()
     list.push_front(2);
     list.push_front(3);
     list.push_front(4);
-
 
     std::cout << "Predecessor of minimal element: " << predOfMin(list.getRoot()) << std::endl;
 
