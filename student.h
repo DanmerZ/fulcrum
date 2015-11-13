@@ -42,7 +42,7 @@ public:
     }
 };
 
-void f()
+void students()
 {
     MaleStudent s("Group T11",4.1);
     FemaleStudent f("erer",2.5);

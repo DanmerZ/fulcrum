@@ -7,10 +7,10 @@ using namespace std;
 
 int main()
 {
+    // students();
+    // twolists();
 
-    //twolists();
-
-    problem_4();
+    problem_6();
 
 
     return 0;

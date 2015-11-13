@@ -5,6 +5,11 @@
 #include <iostream>
 #include <list>
 #include <unordered_set>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
 
 /* Problem 1
  * Reverse a singly linked list with and without recursion
@@ -34,33 +39,55 @@ private:
 public:
     SimpleList()
     {
-        root = new Node;
-        root->next = NULL;
+        root = NULL;
     }
     ~SimpleList()
     {
+        if (root == NULL) return;
         Node* n1 = root->next;
         Node* n2;
         while (n1 != NULL)
         {
             n2 = n1->next;
-            std::cout << "From Destructor: delete element " << n1->data << std::endl;
+            //std::cout << "From Destructor: delete element " << n1->data << std::endl;
             delete n1;
             n1 = n2;
         }
         delete root;
+    }
+    Node* getRoot()
+    {
+        return root;
+    }
+    bool isEmpty()
+    {
+        return root == NULL;
     }
 
     void push_front(Node* n)
     {
         Node* node = new Node;
         node->data = n->data;
-        node->next = root->next;
-        root->next = node;
+        if (root == NULL)
+        {
+            root = node;
+            root->next = NULL;
+        }
+        else
+        {
+            node->next = root->next;
+            root->next = node;
+        }
     }
+    void push_front(int i)
+    {
+        Node* n = new Node(NULL,i);
+        push_front(n);
+    }
+
     void print_list()
     {
-        Node* cur = root->next;
+        Node* cur = root;
         while (cur != NULL)
         {
             std::cout << cur->data << std::endl;
@@ -69,7 +96,7 @@ public:
     }
     void reverse()
     {
-        Node* curr = root->next;
+        Node* curr = root;
         Node* prev = NULL;
         while(curr != NULL)
         {
@@ -78,14 +105,14 @@ public:
             prev = curr;
             curr = next;
         }
-        root->next = prev;
+        root = prev;
     }
     void reverse_recursion()
     {
-        if (root->next == NULL) return;
-        Node* last = reverseHelper(root->next,root->next->next);
-        root->next->next = NULL;
-        root->next = last;
+        if (root == NULL) return;
+        Node* last = reverseHelper(root,root->next);
+        root->next = NULL;
+        root = last;
     }
 };
 
@@ -93,16 +120,16 @@ void problem_1()
 {
     SimpleList lst;
 
-    Node n1(NULL,1), n2(NULL,2), n3(NULL,3), n4(NULL,4);
-    lst.push_front(&n1);
-    lst.push_front(&n2);
-    lst.push_front(&n3);
-    lst.push_front(&n4);
+    lst.push_front(1);
+    lst.push_front(2);
+    lst.push_front(3);
+    lst.push_front(4);
+
     std::cout << "Before reversing:\n";
     lst.print_list();
 
-    lst.reverse();
-    //lst.reverse_recursion();
+    //lst.reverse();
+    lst.reverse_recursion();
 
     std::cout << "After reversing:\n";
     lst.print_list();
@@ -154,9 +181,11 @@ void problem_2()
     n4->next = n5;
     n5->next = n6;
     n6->next = n7;
-    n7->next = n2; // to there
+    n7->next = root; // to there
     //n7->next = NULL;
     std::cout << "isCycled: " << isCycledList(root) << std::endl;
+
+    // delete root; ...
 }
 
 /* Problem 3
@@ -212,7 +241,6 @@ void problem_4()
     for (lit = list.begin(); lit != list.end(); )
     {
         sit = set.find(*lit);
-        set.insert(*lit);
         if (sit != set.end()) // if duplicate
         {
             std::cout << "Erase duplicate: " << *lit << std::endl;
@@ -220,10 +248,114 @@ void problem_4()
         }
         else
         {
+            set.insert(*lit);
             ++lit;
         }
     }
     std::cout << "finished" << std::endl;
+}
+
+/* Problem 5
+ * Write a function which can count how many times every char is present in a string
+ *
+ * Insert every char into map<char,int>
+*/
+
+void problem_5()
+{
+    std::string str = "Write a function which can count how many times every char is present in a string";
+    std::map<char,int> map;
+
+    for (auto c : str)
+    {
+        map[c]++;
+    }
+    for (auto it = map.begin(); it != map.end(); ++it)
+    {
+        std::cout << it->first << ": " << it->second << std::endl;
+    }
+}
+
+/* Problem 6
+ * Write a function that returns only chars that appears in two given strings
+ *
+ * Using std::set_intersection
+ *
+*/
+
+std::string intersectStrings(std::string s1, std::string s2)
+{
+    std::string result;
+
+    std::set<char> set1, set2;
+
+    for (auto c : s1)
+        set1.insert(c);
+
+    for (auto c : s2)
+        set2.insert(c);
+
+
+    std::set<char> intersection;
+    std::set_intersection(set1.begin(),set1.end(),set2.begin(),set2.end(),
+                          std::inserter(intersection,intersection.begin()));
+
+    for (auto c : intersection)
+        result += c;
+
+    return result;
+}
+
+void problem_6()
+{
+    std::string s1 = "Hello";
+    std::string s2 = "world";
+    std::cout << "Intersection of " << s1 << " and " << s2 << " is ";
+    std::cout << intersectStrings(s1,s2) << std::endl;
+}
+
+
+
+
+/* Problem 7
+ * Find the value of the predecessor of min element
+ * ... I guess "in singly linked list"
+ *
+ * Moving along the list and storing previous element
+ *
+ * */
+
+int predOfMin(Node* root)
+{
+    Node* current = root, *pred = NULL;
+    int minimum = root->data;
+    while (current != NULL)
+    {
+        if (current->next && current->next->data < minimum)
+            pred = current;
+        current = current->next;
+    }
+    if (pred != NULL)
+        return pred->data;
+    else
+    {
+        std::cout << "The minimum element does not have the predecessor\n";
+        return -1e5;
+    }
+}
+
+void problem_7()
+{
+    // create singly linked list
+    SimpleList list;
+    list.push_front(1);
+    list.push_front(2);
+    list.push_front(3);
+    list.push_front(4);
+
+
+    std::cout << "Predecessor of minimal element: " << predOfMin(list.getRoot()) << std::endl;
+
 }
 
 #endif // PROBLEMS_H
